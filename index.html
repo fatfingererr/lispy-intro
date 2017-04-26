@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<!-- 2017-04-26 Wed 18:20 -->
+<meta  charset="utf-8" />
+<meta  htto-equiv="X-UA-Compatible" content="chrome=1" />
+<meta  name="generator" content="Org-mode with org-ioslide" />
+<meta  name="author" content="fatfingererr @ ClojureTW 2017 四月聚會" />
+
+
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--This one seems to work all the time, but really small on ipad-->
+<!--<meta name="viewport" content="initial-scale=0.4">-->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" media="all" href="theme/css/default.css" />
+<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css" />
+<link rel="stylesheet" media="all" href="theme/css/small-icon.css" />
+<base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+<script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+
+   <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
+
+<script src="js/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML,local/local" type="text/javascript"></script>
+</head>
+<body style="opacity: 0">
+<slides class="layout-widescreen">
+<slide class="title-slide segue nobackground">
+       <aside class="gdbar"><img src="images/lispy-cake-logo.png"></aside>
+       <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+       <hgroup class="auto-fadein">
+         <h1 data-config-title><!-- populated from slide_config.json --></h1>
+         <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+         <p data-config-presenter><!-- populated from slide_config.json --></p>
+       </hgroup>
+    </slide>
+  
+
+<slide id="sec-" class=" segue dark quote nobackground" style="background-image: url(nil)">
+<aside class="gdbar right bottom"><img src="images/lispy-cake-logo.png"></aside><hgroup class="">
+       <h2 class=" "><div id="outline-container-orgc752a92" class="outline-2">
+<h2 id="orgc752a92">Lispy 基本介紹</h2>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="flexbox vleft auto-fadein" id="text-">
+
+
+</article>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org6c54667" class="outline-4">
+<h4 id="org6c54667">Lispy 簡介</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>是一個在 Emacs 中方便操作 LISP 程式碼的套件，這套知名操作方式來自於另一個套件 Paredit</li>
+</ul>
+
+
+<ul>
+<li>重點優勢來自於其較短的熱鍵綁定</li>
+</ul>
+
+
+<ul>
+<li>透過把游標至於括號處並只需輸入 a-z 或 A-Z 即可執行 100 種以上的操作</li>
+</ul>
+
+
+<ul>
+<li>也由於這樣短小的綁定，所以只能在括號處才能進行操作（在括號內也得先跳至括號才能操作）</li>
+</ul>
+
+
+<ul>
+<li>如果你目前正在使用 Paredit 那 Lispy 也可以同時使用，只有非常少的衝突和部分的重複</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgb6cabee" class="outline-4">
+<h4 id="orgb6cabee">和 vi 的關係是？</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>Lispy 的熱鍵綁定的預設按鍵，啟發自 vi 的操作</li>
+</ul>
+
+
+<ul>
+<li>最重要的關鍵來自於，LISP 的程式碼並不會有：</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="prettyprint" data-lang="lisp">
+j(progn
+    (forward-char 1))k
+</pre>
+
+</div>
+
+<ul>
+<li>所以 vi 的操作可以在不切換 mode 的特別 (Special) 情況下，在括號處直接使用</li>
+
+<li>同時也啟發了許多其他對括號的操作方式</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+
+
+</slide>
+<slide id="sec-" class=" segue dark quote nobackground" style="background-image: url(nil)">
+<aside class="gdbar right bottom"><img src="images/lispy-cake-logo.png"></aside><hgroup class="">
+       <h2 class=" "><div id="outline-container-org109737f" class="outline-2">
+<h2 id="org109737f">lispy tutor 入門教學</h2>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="flexbox vleft auto-fadein" id="text-">
+
+
+</article>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgbfe0193" class="outline-4">
+<h4 id="orgbfe0193">基本定義</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>Point - 目前游標所處的位置</li>
+</ul>
+
+
+<ul>
+<li>Opener - 所有左括號（如 (, [, { )</li>
+</ul>
+
+
+<ul>
+<li>Closer - 所有又括號（如 ), ], } ）</li>
+</ul>
+
+
+<ul>
+<li>Short Binding - 單鍵操作括號</li>
+</ul>
+
+
+<ul>
+<li>Special - 當游標所處的位置處在左括號處或右括號後一格時</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org74ddc83" class="outline-4">
+<h4 id="org74ddc83">lispy-flow</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>首先將游標位置至於起始處的左括號位置</li>
+</ul>
+
+
+<ul>
+<li>按 <code>f</code> 就會跳出 f ，然後迅速消失並跳到下一個左括號</li>
+</ul>
+
+
+<ul>
+<li>請留意，並非是跳掉右括號，而是跳到下一個左括號</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgcc5daab" class="outline-4">
+<h4 id="orgcc5daab">lispy-flow</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-flow-1.gif" alt="lispy-flow-1.gif" width="900px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgfb75ee5" class="outline-4">
+<h4 id="orgfb75ee5">lispy-flow</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>切換到你所想要編輯的那組括號時，按 C-f 可跳入括號內編輯</li>
+</ul>
+
+
+<ul>
+<li>當編輯完畢，可按 <code>[</code> 跳回當前的左括號處，進行其他 lispy 的操作</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgf255789" class="outline-4">
+<h4 id="orgf255789">lispy-flow</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-flow-2.gif" alt="lispy-flow-2.gif" width="700px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org35d0aad" class="outline-4">
+<h4 id="org35d0aad">lispy-different</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>當游標在左或右括號處，按 <code>d</code> 就能在左右括號處跳換</li>
+</ul>
+
+
+<ul>
+<li>可以藉由 <code>f</code> 與 <code>d</code> 練習在一群左右括號中做循環的跳轉</li>
+</ul>
+
+
+<ul>
+<li>當游標在右括號時, <code>f</code> 是以往前一個括號的方式轉換</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org375b343" class="outline-4">
+<h4 id="org375b343">lispy-different</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-different-1.gif" alt="lispy-different-1.gif" width="900px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org692d7af" class="outline-4">
+<h4 id="org692d7af">lispy-forward / backward</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li><code>[</code> 與 <code>]</code> 可以在括號內跳轉到左右括號處</li>
+</ul>
+
+
+<ul>
+<li>如果游標已經在括號處，則會在同一層級的同側括號跳轉</li>
+</ul>
+
+
+<ul>
+<li>跳轉方向正巧與 <code>f</code> 的方向相反</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org3fd6f5c" class="outline-4">
+<h4 id="org3fd6f5c">lispy-forward / backward</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-forward-backward-1.gif" alt="lispy-forward-backward-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgc8d9459" class="outline-4">
+<h4 id="orgc8d9459">lispy-clone / delete</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在左括號處按 <code>c</code> 會立即複製貼上當前括號內容</li>
+</ul>
+
+
+<ul>
+<li>一樣在左括號處按 <code>Ctrl+d</code> 會刪除當前括號內容</li>
+</ul>
+
+
+<ul>
+<li>當在更高層級內不斷刪除，最終括號內沒有東西之後，就會往上個層級刪除括號</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgeba80e2" class="outline-4">
+<h4 id="orgeba80e2">lispy-clone / delete</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-clone-delete-1.gif" alt="lispy-clone-delete-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgefecddd" class="outline-4">
+<h4 id="orgefecddd">lispy-append</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>若要對一個括號進行首尾處的新增與修改：</li>
+</ul>
+
+
+<ul>
+<li><code>2+SPC</code> 會跳到括號內起始處方便編輯</li>
+</ul>
+
+
+<ul>
+<li><code>3+SPC</code> 會跳到括號內末尾處方便編輯</li>
+</ul>
+
+
+<ul>
+<li><code>4+SPC</code> 當我們要在末尾處大量修改時，可以新建一空白行方便編輯</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org20dab99" class="outline-4">
+<h4 id="org20dab99">lispy-append</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-append-1.gif" alt="lispy-append-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgb54e7a6" class="outline-4">
+<h4 id="orgb54e7a6">lispy-view /narrow / widen</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在左括號處按 <code>v</code> 即可將目前括號對準視窗第一行</li>
+
+<li>按兩次 <code>v</code> 即可恢復原本位置</li>
+
+<li>按 <code>N</code> 即可隱藏其他括號內容，專注當前括號編輯</li>
+
+<li>按 <code>W</code> 即可恢復被隱藏之隱藏內容</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org05849d5" class="outline-4">
+<h4 id="org05849d5">lispy-view / narrow / widen</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-view-narrow-widen-1.gif" alt="lispy-view-narrow-widen-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+
+
+</slide>
+<slide id="sec-" class=" segue dark quote nobackground" style="background-image: url(nil)">
+<aside class="gdbar right bottom"><img src="images/lispy-cake-logo.png"></aside><hgroup class="">
+       <h2 class=" "><div id="outline-container-orge3681a9" class="outline-2">
+<h2 id="orge3681a9">lispy 深入操作</h2>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="flexbox vleft auto-fadein" id="text-">
+
+
+</article>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgb6761c3" class="outline-4">
+<h4 id="orgb6761c3">lispy-join</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在左括號內按 <code>+</code> 即可將當前括號，和同一層級的括號合併</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgf1737c4" class="outline-4">
+<h4 id="orgf1737c4">lispy-join</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-join-1.gif" alt="lispy-join-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgbb45e7f" class="outline-4">
+<h4 id="orgbb45e7f">lispy-barf / slurp</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li><code>&lt;</code> 會將括號中的東西吐 (barf) 出來</li>
+</ul>
+
+
+<ul>
+<li>當在左括號處按 <code>&lt;</code> 括號會往右移動，將第一個元素移出括號</li>
+</ul>
+
+
+<ul>
+<li>當在右括號處按 <code>&lt;</code> 括號會往左移動，將最後一個元素移出括號</li>
+</ul>
+
+
+<ul>
+<li>同理，=&gt;= 會將括號外的東西吃進來 (slurp)</li>
+</ul>
+
+
+<ul>
+<li>要特別留意 <code>&lt;</code> 與 <code>&gt;</code> 在左右括號時的不同操作</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgd7608f2" class="outline-4">
+<h4 id="orgd7608f2">lispy-barf /slurp</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-barf-slurp-1.gif" alt="lispy-barf-slurp-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org1a94136" class="outline-4">
+<h4 id="org1a94136">lispy-undo / repeat</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>進行了單一的括號操作後，可使用 <code>.</code> 重覆同樣的操作</li>
+</ul>
+
+
+<ul>
+<li>同樣道理，也可以使用 <code>u</code> 對任何操作進行 undo</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org0ac49f2" class="outline-4">
+<h4 id="org0ac49f2">lispy-undo / repeat</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-undo-repeat-1.gif" alt="lispy-undo-repeat-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orge254a2d" class="outline-4">
+<h4 id="orge254a2d">lispy-oneline / alt-multiline</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>按 <code>O</code> 即可將括號內容，變成單一一行</li>
+</ul>
+
+
+<ul>
+<li>按 <code>M</code> 則可將括號內容展開為多航表示</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org18410bd" class="outline-4">
+<h4 id="org18410bd">lispy-oneline / alt-multiline</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-oneline-multiline-1.gif" alt="lispy-oneline-multiline-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgf236f36" class="outline-4">
+<h4 id="orgf236f36">lispy-occur</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在 lispy 中也可以有類似 occur 的功能</li>
+</ul>
+
+
+<ul>
+<li>按 <code>y</code> 即可進入 occur 模式</li>
+</ul>
+
+
+<ul>
+<li>按 <code>C-g</code> 即可脫離 occur 模式</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org18ef6ac" class="outline-4">
+<h4 id="org18ef6ac">lispy-occur</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-occur-1.gif" alt="lispy-occur-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org6ca7648" class="outline-4">
+<h4 id="org6ca7648">lispy-follow</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在 lispy 中可以查詢定義好的 macro</li>
+</ul>
+
+
+<ul>
+<li>按 <code>F</code> 即會開啟對應 macro 的位置檔案</li>
+</ul>
+
+
+<ul>
+<li>沒有對應 macro 則可指定給他一個路徑</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org6d67e5e" class="outline-4">
+<h4 id="org6d67e5e">lispy-follow</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-follow-1.gif" alt="lispy-follow-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgeef133a" class="outline-4">
+<h4 id="orgeef133a">lispy-convolute</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在左括號處可以按 <code>C</code> 將後續括號對齊目前位置</li>
+</ul>
+
+
+<ul>
+<li>搭配 undo 調整出合適的對齊方式</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org2818621" class="outline-4">
+<h4 id="org2818621">lispy-convolute</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-convolute-1.gif" alt="lispy-convolute-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org0aeb286" class="outline-4">
+<h4 id="org0aeb286">lispy-ace-paren / ace-char</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在左括號處按 <code>q</code> 即會標示出所有括號起始處，選擇標示即可讓跳躍到該處</li>
+</ul>
+
+
+<ul>
+<li><code>Q</code> 則是可標示出符合輸入字母的位置，選擇標示即可跳躍到該處</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org04ab222" class="outline-4">
+<h4 id="org04ab222">lispy-ace-paren / ace-char</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-ace-paren-char-1.gif" alt="lispy-ace-paren-char-1.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-orgb84f0e5" class="outline-4">
+<h4 id="orgb84f0e5">lispy-ace-symbol / ace-subword / ace-replace</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<ul>
+<li>在左括號處按 <code>a</code> 即可跳至標示處並向後選取</li>
+</ul>
+
+
+<ul>
+<li>按 <code>-</code> 則是跳至標示處向前選取</li>
+</ul>
+
+
+<ul>
+<li>兩者的選取都只能在括號內向下層級去選取，所以得先切換到你要處理的括號位置</li>
+</ul>
+
+
+<ul>
+<li><code>H</code> 如同 <code>a</code> 與 <code>-</code> 一樣，不過會把標示刪除留下空格</li>
+</ul>
+
+
+</article>
+
+</slide>
+
+
+</slide>
+<slide id="sec-"  >
+<hgroup class="">
+       <h2 class=" "><div id="outline-container-org8b5178a" class="outline-4">
+<h4 id="org8b5178a">lispy-ace-symbol / ace-subword / ace-replace</h4>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="" id="text-">
+<article class="flexbox vcenter">
+
+<div class="figure">
+<p><img src="images/lispy-ace-symobol-subword.gif" alt="lispy-ace-symobol-subword.gif" width="800px" />
+</p>
+</div>
+</article>
+
+
+</article>
+
+</slide>
+
+</slide>
+
+
+</slide>
+<slide id="sec-" class=" segue dark quote nobackground" style="background-image: url(nil)">
+<aside class="gdbar right bottom"><img src="images/lispy-cake-logo.png"></aside><hgroup class="">
+       <h2 class=" "><div id="outline-container-org8ec122d" class="outline-2">
+<h2 id="org8ec122d">Thank You</h2>
+</div>
+</h2>
+       <h3></h3>
+       </hgroup>
+<article class="flexbox vleft auto-fadein" id="text-">
+
+
+</article>
+
+</slide>
+<slide class="backdrop"></slide>
+</slides> 
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body> 
+
+</html>
